@@ -17,14 +17,12 @@ io.on("connection", (socket) => {
         console.log('We lost the client');
     });
 
-    socket.emit("newMessage", {
-        from: "marcus",
-        text: "sup everybody",
-        createdAt: 234321
-    });
-
     socket.on("createMessage", (message) => {
-        console.log(message);
+        io.emit("newMessage", {
+            from: message.from,
+            text: message.text,
+            createAt: new Date().getTime()
+        });
     });
 });
 
