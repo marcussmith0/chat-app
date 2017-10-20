@@ -2,6 +2,12 @@ var socket = io();
 socket.on("connect", function(){
     console.log("new user connected to client");
 
+    socket.on("newMessage", (message) => {
+        console.log(message);
+    });
+    socket.on("newMessge", (message) => {
+        console.log(message);
+    })
 });
 
 socket.on("disconnect", function(){

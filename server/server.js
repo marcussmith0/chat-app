@@ -8,21 +8,25 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = socketIO(server);
 
+const { generateMessage } = require("./utils/message");
+
 app.use(express.static(path.join(__dirname, "../public")));
+
+
 
 io.on("connection", (socket) => {
     console.log("new user connected");
+
+    socket.emit("newMessage", generateMessage("Admin", "hey new connecter"));
+    
+    socket.broadcast.emit("newMessage", generateMessage("Admin", "A new user connected"));
 
     socket.on("disconnect", () => {
         console.log('We lost the client');
     });
 
     socket.on("createMessage", (message) => {
-        io.emit("newMessage", {
-            from: message.from,
-            text: message.text,
-            createAt: new Date().getTime()
-        });
+        io.emit("newMessage", generateMessage(message.from, message.text));
     });
 });
 
