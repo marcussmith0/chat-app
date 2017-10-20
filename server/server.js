@@ -1,7 +1,7 @@
-const express = require("express");
 const path = require("path");
-const socketIO = require("socket.io");
 const http = require("http");
+const express = require("express");
+const socketIO = require("socket.io");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,8 +25,9 @@ io.on("connection", (socket) => {
         console.log('We lost the client');
     });
 
-    socket.on("createMessage", (message) => {
+    socket.on("createMessage", (message, callback) => {
         io.emit("newMessage", generateMessage(message.from, message.text));
+        callback("this is from the server");
     });
 });
 
